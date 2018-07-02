@@ -47,7 +47,7 @@ body{
 .left-col h1{
   margin-top:10vh;
 }
-.right-col a{
+a{
   color:white;
 }
 .right-col i{
@@ -105,7 +105,7 @@ body{
   font-size:55px;
   color:rgba(50,223,183, 1);
 }
-.carousel-caption button{
+.btn{
   border:none;
   font-family: 'Galada', cursive;
   font-size:18px;
@@ -118,8 +118,9 @@ body{
   height:45px;
   transition: 0.5s ease;
 }
-.carousel-caption button:hover{
+.btn:hover{
   background-color:#FFA200;
+  color:white;
   box-shadow:0px 0px 0px white;
 }
   .proj-img{
@@ -143,3 +144,10 @@ body{
     margin:0 auto;
     padding:0;
   }
+
+@media (min-width:900px){
+  .proj-img{
+    width:50vw;
+    height:45vw;
+  }
+}
