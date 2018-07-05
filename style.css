@@ -151,3 +151,9 @@ a{
     height:45vw;
   }
 }
+@media (min-width:1280px){
+  .proj-img{
+    width:35vw;
+    height:40vh;
+  }
+}
