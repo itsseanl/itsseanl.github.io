@@ -125,8 +125,8 @@ a{
 }
   .proj-img{
     margin:0 auto;
-    width:40vw;
-    height:30vh;
+    width: auto;
+    height: 40vh;
     display: block;
   }
   .carousel-caption{
