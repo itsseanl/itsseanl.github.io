@@ -1,0 +1,44 @@
+[
+  {
+    "make": "Fiat",
+    "model":"500 Abarth",
+    "year":"2013",
+    "Horsepower":"160hp",
+    "Torque":"170lb-ft",
+    "MPG":"28C/32H",
+    "drive":"FWD",
+    "Description":"The Fiat 500 Abarth is small, light, and excitingly torquey. You won't be winning any street races, but you will be smiling ear to ear zipping through back roads, or even just listening to the incredible exhaust note when you turn the key or pull off from a light. It's unexpectedly limited turning radius can make it a bit tricky to park in tight spaces, but its size and fun-factor make it an easy choice for the city-dwelling car enthusiast.",
+    "type":"Hatchback",
+    "price":"$7-10,000",
+    "category":"Fun",
+    "id":"1"
+  },
+  {
+    "make": "Ford",
+    "model":"Fiesta ST",
+    "year":"2014-2017",
+    "Horsepower":"197hp",
+    "Torque":"214lb-ft",
+    "MPG":"26C/34H",
+    "drive":"FWD",
+    "Description":"The 2014 Ford Fiesta is a fun-to-drive small car, with a nicely trimmed cabin, excellent build quality and plenty of connectivity features. If you're looking for an economy sedan or hatchback that feels like a more expensive car than it really is, the Fiesta deserves serious consideration.",
+    "type":"Hatchback",
+    "price":"$7-10,000",
+    "category":"Fun",
+    "id":"2"
+
+  },
+  {
+    "make": "Jeep",
+    "model":"Wrangler",
+    "year":"1997-2006",
+    "Horsepower":"181hp",
+    "Torque":"222ft-lb",
+    "MPG":"16C/20H",
+    "Description":"The Jeep Wrangler is a cultural icon at this point. Certified off-road capabilities, detachable roof and doors, and the ability to drive anywhere you can fit it. Interior space is limited, gas mileage is upsetting, but the wrangler is cheap to maintain, simple to fix, and an undeniable blast to cruise around in with the top down. Many recommend the I6 engine if you care about merging onto highways.",
+    "type":"SUV",
+    "category":"Fun",
+    "id":"3"
+
+  }
+]

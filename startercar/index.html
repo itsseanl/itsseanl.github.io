@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body onload="javascript:loadData()">
+<header class="header">
+  <h1><i class="fas fa-car"></i>StarterCar</h1>
+  <label>
+  <input type="text" list="searchComplete" name="search" id="search" placeholder="Search...">
+  <datalist id="searchComplete">
+    <option value="">
+  </datalist>
+</label>
+</header>
+<main>
+  <div class="wrapper">
+
+
+    <div class="carImg" id="carImg">
+    </div>
+
+    <div class="info">
+      <div class="makemodel">
+        <i class="fas fa-car"></i>
+        <p id="makemodel"></p>
+      </div>
+      <div class="year">
+        <i class="fas fa-calendar-alt icon"></i>
+        <p id="year"></p>
+      </div>
+      <div class="power">
+        <i class="fas fa-tachometer-alt"></i>
+        <p id="power"></p>
+      </div>
+      <div class="mpg">
+        <i class="fas fa-gas-pump"></i>
+        <p id="mpg"></p>
+      </div>
+      <div class="description">
+        <p id="description"></p>
+    </div>
+    <div class="arrows">
+      <div class="arrow arrowLeft">
+        <!-- <p><i class="fas fa-caret-left"></i></p> -->
+      </div>
+      <div class="arrow arrowRight">
+        <!-- <p><i class="fas fa-caret-right"></i></p> -->
+      </div>
+
+    </div>
+    <!-- <p style="color:#474747;">Find your (insert car name)</p> -->
+
+  </div>
+  </div>
+
+</main>
+<script>
+let makeModel = document.getElementById('makemodel');
+let mpg = document.getElementById('mpg');
+let power = document.getElementById('power');
+let description = document.getElementById('description');
+let year = document.getElementById('year');
+let imgLink = document.getElementById('carImg');
+
+
+const cars = [];
+const endpoint = "cars.json";
+
+function loadData(){
+  fetch(endpoint)
+    .then(blob => blob.json())
+    .then(data => {
+        cars.push(...data);
+    })
+    .then(function go(){
+      const result = getCar(cars);
+      autofill(result);
+    });
+}
+
+
+  const searchInput = document.getElementById('search');
+  const searchComplete = document.getElementById('searchComplete');
+
+  searchInput.addEventListener('change', displayMatch);
+  searchInput.addEventListener('keyup', displayMatch);
+  searchInput.addEventListener('keypress', function(e){
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is enter
+      const result = getCar(cars);
+      autofill(result);
+    }
+  });
+
+  function findMatch(wordToMatch, cars) {
+    return cars.filter(car => {
+      const regex = new RegExp(wordToMatch, 'gi');
+      return car.make.match(regex) || car.model.match(regex);
+    });
+  }
+
+  function displayMatch(){
+    if (this.value) {
+      const matchArray = findMatch(this.value, cars);
+      const html = matchArray.map(car => {
+        return `<option value="${car.make} ${car.model}">`
+      }).join('');
+      searchComplete.innerHTML = html;
+      //this.addEventListener('click', autofill) ?? when the specific list item is clicked/entered, autofill input box. datalist may be better implementation
+    }
+    else{
+      searchComplete.innerHTML = "";
+    }
+  }
+
+  function getCar(cars){
+
+    let result;
+    searchCar = searchInput.value;
+    if (searchCar && (searchCar != "" || searchCar != " ")){
+      result = cars.filter(car => car.make + ' ' + car.model == searchCar);
+      console.log(result[0]);
+      return result[0];
+
+    }
+    else{
+      //get random car from array
+      const randSelection = Math.random() * (cars.length - 1) + 1;
+      result = cars[Math.round(randSelection)];
+      console.log(result, Math.round(randSelection));
+      return result;
+
+    }
+
+    // const bgImg = 'url(\'images/' + result[0].make + result[0].model + '.jpg\')';
+    //
+    // carImg.style.backgroundImage = bgImg.replace(' ', '');
+    //
+    // makeModel.innerHTML = '|' + result[0].make + ' ' + result[0].model;
+    // mpg.innerHTML = '|' + result[0].MPG;
+    // year.innerHTML = '|' + result[0].year;
+    // power.innerHTML = '|' + result[0].Horsepower + '/' + result[0].Torque;
+    // description.innerHTML = result[0].Description;
+
+  }
+
+  function autofill(result){
+
+    const bgImg = 'url(\'images/' + result.make + result.model + '.jpg\')';
+
+    carImg.style.backgroundImage = bgImg.replace(' ', '');
+
+    makeModel.innerHTML = '|' + result.make + ' ' + result.model;
+    mpg.innerHTML = '|' + result.MPG;
+    year.innerHTML = '|' + result.year;
+    power.innerHTML = '|' + result.Horsepower + '/' + result.Torque;
+    description.innerHTML = result.Description;
+  }
+
+  function next(cars){
+
+  }
+</script>
+</body>
+</html>
