@@ -1,0 +1,55 @@
+html, body{
+margin:0;
+padding:0;
+}
+
+body{
+  background-image:url('tooreal.jpg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size:cover;
+  opacity:0.8;
+}
+canvas{
+  height:90vh;
+  width:100vw;
+}
+header{
+  background-color:black;
+  display:flex;
+  flex-direction: row-;
+  width:100vw;
+  heigh:20vh;
+}
+.headerInfo{
+  height:25vh;
+}
+.songinfo{
+  width:30vw;
+  height:20vh;
+  margin:2.5vh;
+  border-left: 1px solid #737373;
+  align-self: flex-end;
+  padding:10px;
+  display:flex;
+  flex-direction:row;
+  align-items: center;
+
+}
+.flexItem{
+  width:33.3%;
+  color:white;
+}
+.flexItem img{
+  float:right;
+}
+.flexItem audio{
+  display: flex;
+justify-content: center;
+align-items: center;
+width:100%;
+}
+header img{
+  width:8vh;
+  height:8vh;
+}
