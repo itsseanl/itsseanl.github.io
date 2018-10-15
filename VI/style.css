@@ -9,12 +9,17 @@ body{
   background-position: center top;
   background-size:cover;
   opacity:0.8;
+  display:flex;
 }
 canvas{
-  height:90vh;
+  height:85vh;
   width:100vw;
+  margin-top:15vh;
+  position: absolute;
+  z-index:1;
 }
 header{
+  z-index:99;
   background-color:black;
   display:flex;
   flex-direction: row-;
