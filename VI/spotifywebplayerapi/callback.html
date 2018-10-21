@@ -1,3 +1,105 @@
 <!DOCTYPE html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body onload="javascript:start()">
+<header>
+   <div class="headerinfo">
+      <h1>SoundScape</h1>
+      <input type="text" placeholder="find your jam..." />
+  </div>
 
+  <div class="songinfo">
+    <div class="info">
+      <h1>Do U Want Me</h1>
+      <h5>Giraffage</h5>
+        <audio id="audio" src="Giraffage Do U Want Me.mp3"> </audio>
+    </div>
+      <div class="img">
+        <img src="tooreal.jpg"/>
+
+      </div>
+  </div>
+</header>
+<canvas width="1000" height="1200" id="canvas"></canvas>
+<script type="text/javascript">
+
+window.el = document.getElementById('audio');
+window.canvas = document.getElementById('canvas');
+window.canvasCtx = canvas.getContext('2d');
+
+window.context = new AudioContext();
+
+window.analyser = context.createAnalyser();
+
+
+function start(){
+      var source = context.createMediaElementSource(el);
+
+      source.connect(context.destination);
+      source.connect(analyser);
+
+      audio.crossOrigin = "anonymous";
+
+}
+
+function play(){
+  el.play();
+  visualize();
+}
+
+function visualize() {
+  analyser.fftSize = 256;
+  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+  var bufferLength = analyser.frequencyBinCount;
+
+      var dataArray = new Uint8Array(bufferLength);
+      console.log(bufferLength);
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height *1.5);
+
+    var draw = function() {
+
+          analyser.getByteFrequencyData(dataArray);
+          drawVisual = requestAnimationFrame(draw);
+
+          canvasCtx.fillStyle = 'rgb(0, 0, 0, 0.05)';
+          canvasCtx.fillRect(0, 0, canvas.width, canvas.height *1.5);
+      console.log(canvas.width);
+
+          var barWidth = (canvas.width / bufferLength) * 2.5;
+          var barHeight;
+
+          var x = 0;
+          var z  = 6;
+          for(var i = 0; i < bufferLength/2; i++) {
+            barHeight = dataArray[i]/.25;
+            console.log(barHeight);
+            console.log(barWidth);
+            canvasCtx.fillStyle = 'rgb(' + (barHeight/z) + ','+z*.19+','+z/2.2+')';
+            canvasCtx.fillRect(x,canvas.height-barHeight,barWidth,barHeight);
+            canvasCtx.strokeStyle="#80DA4F";
+            canvasCtx.beginPath();
+canvasCtx.moveTo(50,20);
+            canvasCtx.quadraticCurveTo(230, 30, 50, 100);
+
+            canvasCtx.strokeRect(x,canvas.height-barHeight,barWidth,barHeight);
+
+            z = z * 1.24;
+            x += barWidth + 2;
+
+
+          };
+}
+
+    draw();
+}
+
+
+
+document.addEventListener('click', play);
+
+</script>
+</body>
 </html>
