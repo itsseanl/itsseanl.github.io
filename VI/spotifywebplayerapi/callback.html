@@ -36,12 +36,29 @@ window.analyser = context.createAnalyser();
 
 
 function start(){
-      var source = context.createMediaElementSource(el);
 
-      source.connect(context.destination);
-      source.connect(analyser);
+  const url = window.location.href;
+  console.log(url);
+  const urlSplit = url.split('token=');
+  const token = urlSplit[1].substring(0,urlSplit[1].indexOf('&'));
+  console.log(token);
+  fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer BQArYBNS7SD77Jqfjo7GVzsJLLK5zKHbp8TiLd1tVkRhOYkRvxkT-sk8ZwPNdueFuJKZt_IXM0I5M0-IY8-UKaIfveT1TIeUq9kDdrKRHmXZC15gHHSIwpaNJMQn_KHfV6ibWiYi9fitlX9ajnJnZI4",
+    "Content-Type": "application/json"
+  }
+});
 
-      audio.crossOrigin = "anonymous";
+startVisualizer();
+}
+function startVisualizer(){
+  var source = context.createMediaElementSource(el);
+
+  source.connect(context.destination);
+  source.connect(analyser);
+
+  audio.crossOrigin = "anonymous";
 
 }
 
