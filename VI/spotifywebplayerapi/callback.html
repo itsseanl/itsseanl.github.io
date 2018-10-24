@@ -45,9 +45,11 @@ function start(){
   fetch("https://api.spotify.com/v1/me/player/currently-playing", {
   headers: {
     Accept: "application/json",
-    Authorization: "Bearer BQArYBNS7SD77Jqfjo7GVzsJLLK5zKHbp8TiLd1tVkRhOYkRvxkT-sk8ZwPNdueFuJKZt_IXM0I5M0-IY8-UKaIfveT1TIeUq9kDdrKRHmXZC15gHHSIwpaNJMQn_KHfV6ibWiYi9fitlX9ajnJnZI4",
+    Authorization: `Bearer ${token}`,
     "Content-Type": "application/json"
   }
+    .then(data =>data.json)
+    .then(console.log(data));
 });
 
 startVisualizer();
