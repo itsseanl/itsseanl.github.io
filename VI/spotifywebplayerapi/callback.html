@@ -40,6 +40,7 @@ function start(){
   const url = window.location.href;
   console.log(url);
   const urlSplit = url.split('token=');
+  let currentSong = [];
   const token = urlSplit[1].substring(0,urlSplit[1].indexOf('&'));
   console.log(token);
   fetch("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -49,9 +50,11 @@ function start(){
     "Content-Type": "application/json"
   }
     .then(data =>data.json)
-    .then(console.log(data));
+    .then(data =>{
+      currentSong.push(...data);
+    });
 });
-
+console.table(currentSong);
 startVisualizer();
 }
 function startVisualizer(){
