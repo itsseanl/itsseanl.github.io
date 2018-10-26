@@ -52,11 +52,12 @@ function start(){
     .then(data =>data.json)
     .then(data =>{
       currentSong.push(...data);
-    });
+    })
 });
 console.table(currentSong);
 startVisualizer();
 }
+
 function startVisualizer(){
   var source = context.createMediaElementSource(el);
 
