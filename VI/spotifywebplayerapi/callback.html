@@ -48,7 +48,7 @@ function start(){
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json"
-  }
+  },
     .then(data =>data.json)
     .then(data =>{
       currentSong.push(...data);
