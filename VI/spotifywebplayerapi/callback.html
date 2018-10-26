@@ -15,7 +15,7 @@
     <div class="info">
       <h1>Do U Want Me</h1>
       <h5>Giraffage</h5>
-        <audio id="audio" src="https://api.spotify.com/v1/tracks/0eGsygTp906u18L0Oimnem"> </audio>
+        <audio id="audio" src=""> </audio>
     </div>
       <div class="img">
         <img src="tooreal.jpg"/>
@@ -46,13 +46,13 @@ function start(){
   fetch("https://api.spotify.com/v1/me/player/currently-playing", {
   headers: {
     Accept: "application/json",
-    Authorization: "Bearer" + " " + token,
+    Authorization: "Bearer " + token,
     "Content-Type": "application/json"
   }})
     .then(goods =>goods.json)
     .then(data =>{
-      currentSong = data});
-console.table(currentSong);
+      currentSong = data})
+    .then(console.table(currentSong));
 startVisualizer();
 }
 
