@@ -49,7 +49,7 @@ function start(){
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json"
   }})
-    .then(data =>data.json)
+    .then(goods =>goods.json)
     .then(data =>{
       currentSong.push(...data);
     });
