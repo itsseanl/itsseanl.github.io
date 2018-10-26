@@ -46,7 +46,7 @@ function start(){
   fetch("https://api.spotify.com/v1/me/player/currently-playing", {
   headers: {
     Accept: "application/json",
-    Authorization: `Bearer ${token}`,
+    Authorization: "Bearer" + token,
     "Content-Type": "application/json"
   }})
     .then(goods =>goods.json)
