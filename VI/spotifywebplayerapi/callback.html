@@ -15,7 +15,7 @@
     <div class="info">
       <h1>Do U Want Me</h1>
       <h5>Giraffage</h5>
-        <audio id="audio" src="https://api.spotify.com/v1/tracks/0eGsygTp906u18L0Oimnem"</audio>
+        <audio id="audio" src=""> </audio>
     </div>
       <div class="img">
         <img src="tooreal.jpg"/>
@@ -36,12 +36,36 @@ window.analyser = context.createAnalyser();
 
 
 function start(){
-      var source = context.createMediaElementSource(el);
 
-      source.connect(context.destination);
-      source.connect(analyser);
+  const url = window.location.href;
+  console.log(url);
+  const urlSplit = url.split('token=');
+  let currentSong = [];
+  const token = urlSplit[1].substring(0,urlSplit[1].indexOf('&'));
+  console.log(token);
+  fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer " + token,
+    "Content-Type": "application/json"
+  }})
+    .then(function(response){
+      console.log(response);
+        return response.blob();
+    })
+    .then(data =>{
+      currentSong = data})
+    .then(console.table(currentSong));
+startVisualizer();
+}
 
-      audio.crossOrigin = "anonymous";
+function startVisualizer(){
+  var source = context.createMediaElementSource(el);
+
+  source.connect(context.destination);
+  source.connect(analyser);
+
+  audio.crossOrigin = "anonymous";
 
 }
 

@@ -69,6 +69,9 @@ header{
   align-items:flex-end;
   padding-right:1vw;
 }
+.info > h1, h5, h6{
+  margin:0;
+}
 .songinfo audio{
   width:30vw;
 
