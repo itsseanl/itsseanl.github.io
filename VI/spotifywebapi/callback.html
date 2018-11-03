@@ -8,7 +8,6 @@
 <header>
    <div class="headerinfo">
       <h1>SoundScape</h1>
-      <input type="text" placeholder="find your jam..." />
   </div>
 
   <div class="songinfo">
@@ -40,6 +39,8 @@ const highEnergy = "rgba(168, 166, 254, 0.8)";
 const midEnergy = "rgba(34, 30, 255, 0.8)";
 const lowEnergy = "rgba(6, 4, 119, 0.8)";
 
+var circleArray = [];
+
 
 setInterval(function getCurrentSong(){
   let currentSong = new Object();
@@ -62,11 +63,12 @@ setInterval(function getCurrentSong(){
         //console.log(responseAsJson);
         currentSong = responseAsJson;
         if (songTitle.innerHTML == currentSong.item.name){
-          console.log("same song");
+          // console.log("same song");
           return;
         }
         else {
-          console.log("test");
+          // console.log("test");
+
           albumArt.src = currentSong.item.album.images[0].url;
           songTitle.innerHTML = currentSong.item.name;
           albumTitle.innerHTML = currentSong.item.album.name;
@@ -77,28 +79,30 @@ setInterval(function getCurrentSong(){
       });
 }, 1000);
 
-// function getAudioAnalysis(currentSong, token){
-//   let currentSection = new Object();
-//   //track.sections.start
-//   fetch("https://api.spotify.com/v1/audio-analysis/" + currentSong.item.id, {
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: "Bearer " + token,
-//       "Content-Type": "application/json"
-//     }
-//   })
-//     .then(function(response){
-//       return response.json();
-//     })
-//     .then(function(responseAsJson){
-//         //console.log(responseAsJson);
-//         audioAnalysis = responseAsJson;
-//         return audioAnalysis;
-//       })
-//       .then(function(audioAnalysis){
-//         getAudioFeatures(currentSong, audioAnalysis, token);
-//       });
-// }
+function getAudioAnalysis(trackFeatures, token, currentSong){
+  let currentSection = new Object();
+  //track.sections.start
+  fetch("https://api.spotify.com/v1/audio-analysis/" + currentSong.item.id, {
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(responseAsJson){
+        //console.log(responseAsJson);
+        audioAnalysis = responseAsJson;
+        return audioAnalysis;
+      })
+      .then(function(audioAnalysis){
+        // getAudioFeatures(currentSong, audioAnalysis, token);
+        console.log('viz');
+        visualizer(trackFeatures, currentSong, audioAnalysis);
+      });
+}
 
 function getAudioFeatures(currentSong, token){
   console.log("audioFeaturesRunning");
@@ -120,22 +124,24 @@ function getAudioFeatures(currentSong, token){
     return trackFeatures;
   })
   .then(function(trackFeatures){
-    visualizer(trackFeatures, currentSong);
+    //visualizer(trackFeatures, currentSong);
+    getAudioAnalysis(trackFeatures,token, currentSong);
 
   });
 }
+var t;
 
 
-function visualizer(trackFeatures, currentSong){
+function visualizer(trackFeatures, currentSong, audioAnalysis){
   console.log("visualize running");
 
   let currentPoint = currentSong.progress_ms;
   console.log(trackFeatures);
    bpm = trackFeatures.tempo;
-   return bpm;
+   console.log(bpm);
+   createCircs(bpm);
 
 }
-
 
 
 var canvas = document.getElementById('canvas');
@@ -145,54 +151,78 @@ canvas.height = window.innerHeight;
 
 var randomColor = "rgba(" + Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+",0.8)";
 
-var circleArray = [];
+function createCircs(bpm){
+  clearTimeout(t);
 
-
-for(let i=1; i<1000; i++){
+  i = 1;
+  circleArray.length = 0;
+  cancelAnimationFrame(animate);
+  c.clearRect(0, 0, window.width, window.height);
+  circleArray = [];
   var x = 500;
   var y = 500;
   var radius = Math.floor(Math.random() * 256);
+for(let i=1; i<2; i++){
   (function(i){
-    setTimeout(function(){
-      console.log(i);
-        circleArray.push(new Circle(this.x, this.y, this.radius));
-        bpm.addEventListener
-        console.log(bpm);
-        i++;
+    console.log(bpm);
+    console.log(window.bpm);
+    t = setInterval(function(i){
+        circleArray.push(new Circle(this.x, this.y, this.radius, bpm));
+
     }, 60000/bpm * i);
+    if (this.bpm != window.bpm){
+      return;
+    }
 })(i);
+
 }
 
-var circle = new Circle(x, y, radius, randomColor);
 
+}
 animate();
 
-function Circle(x, y, radius){
-  this.x = x;
-  this.y = y;
-  this.radius = 55;
-  this.randomStroke = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";;
-  this.randomFill = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";;
+var animateCounter = 0;
 
+function Circle(x, y, radius, bpm){
+  console.log(bpm);
+  this.x = 760;
+  this.y = 800;
+  this.radius = 55;
+  this.randomStroke = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";
+  this.randomFill = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";
   this.draw = function() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, Math.PI * 2, false);
-    c.strokeStyle =  this.randomStroke;
+
+    // c.strokeStyle =  this.randomStroke;
     c.fillStyle = this.randomFill;
-    c.lineWidth = 15;
-    c.stroke();
+    // c.lineWidth = 5;
+    // c.stroke();
     c.fill();
-    this.update();
+    this.update(bpm);
     //console.log(this.x);
     //console.log(this.y);
     //console.log(radius);
   }
+  this.update = function(bpm){
+    animateCounter++;
+    console.log(animateCounter);
+    console.log(bpm);
+    console.log(Math.round(60000/bpm));
+    if (animateCounter == Math.round(60000/bpm)){
+      console.log(animateCounter);
 
-  this.update = function(){
-    if (this.radius > 1500){
-      cancelAnimationFrame(animate);
+      animateCounter = 0;
+      c.beginPath();
+      c.fillStyle = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";
+      c.fill();
+
     }
-    this.radius+=10;
+    if (this.radius > 1200){
+      this.radius = 55;
+    }
+
+    this.radius+=5;
   }
 }
 function animate(){
@@ -200,12 +230,12 @@ requestAnimationFrame(animate);
 c.clearRect(0, 0, innerWidth, innerHeight);
 for (let i=0; i<circleArray.length; i++){
   circleArray[i].draw();
-  console.log("drawn");
 
 
 }
 
 }
+
 
 
 
