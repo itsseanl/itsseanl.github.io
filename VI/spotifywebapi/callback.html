@@ -192,8 +192,8 @@ function visualizer(trackFeatures, currentSong, audioAnalysis){
         console.log(barsCounter);
         console.log("bar Start " + barsTime[x].toFixed(1) + " currentPoint: " + (currentPointBars/1000).toFixed(1));
 
-        headerInfo.style.backgroundColor = randomColor;
-        headerInfo.style.transition = "background 0.5s";
+        overlay.style.backgroundColor = randomColor;
+        overlay.style.transition = "background 0.5s";
 
       }
     }
@@ -234,49 +234,56 @@ function createCircs(bpm, songEnergy){
 }
 
 animate();
-
-function Circle(x, y, radius, bpm, songEnergy){
-  console.log(bpm);
-  console.log(songEnergy);
-  this.x = 750;// Math.floor(Math.random() * 1500);
-  this.y = 550;// Math.floor(Math.random() * 1500);
-  this.radius = 5;
+var drawCounter = 0;
+function circFillStyle(songEnergy){
+  var randomFill;
   if (songEnergy >=0.6){
-    this.randomFill = highEnergy[Math.floor(Math.random() * Math.floor(3))];
+    randomFill = highEnergy[Math.floor(Math.random() * Math.floor(3))];
 
   }
   else if (songEnergy >=0.3 && songEnergy <0.6){
-    this.randomFill = midEnergy[Math.floor(Math.random() * Math.floor(3))];
+    randomFill = midEnergy[Math.floor(Math.random() * Math.floor(3))];
 
   }
   else{
-    this.randomFill = lowEnergy[Math.floor(Math.random() * Math.floor(3))];
+    randomFill = lowEnergy[Math.floor(Math.random() * Math.floor(3))];
 
   }
+  return randomFill;
+}
+function Circle(x, y, radius, bpm, songEnergy, i){
+  var initialRadius = Math.floor(Math.random() * Math.floor(6));
+  var radiusDirection = initialRadius;
+
+  this.x = canvas.width/2;// Math.floor(Math.random() * 1500);
+  this.y = canvas.height/2;// Math.floor(Math.random() * 1500);
+  this.radius = initialRadius;
+  var randomFill = circFillStyle(songEnergy);
 
   this.draw = function() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, Math.PI * 2, false);
-    c.fillStyle = this.randomFill;
+    c.fillStyle = randomFill;
     c.fill();
     this.update(bpm);
 
   }
 
   this.update = function(bpm){
-    animateCounter++;
+    // drawCounter++;
+    // if(Math.round(60000/bpm) == drawCounter){
+    //   // circleArray.forEach(function(circle){
+    //   //   c.fillStyle = circFillStyle(songEnergy);
+    //   //   c.fill();
+    //   //   console.log("hit");
+    //   // })
+    //   drawCounter = 0;
 
-    if (animateCounter == Math.round(60000/bpm)){
-      animateCounter = 0;
-      c.beginPath();
-      c.fillStyle = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";
-      c.fill();
+    if (this.radius > 400 || this.radius < initialRadius){
+      // this.radius = 55;
+      radiusDirection = -radiusDirection;
     }
-    if (this.radius > 1000){
-      this.radius = 55;
-      c.beginPath();
-    }
-    this.radius+=5;
+    this.radius+=radiusDirection;
   }
 }
 
