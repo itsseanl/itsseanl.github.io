@@ -5,10 +5,11 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body onload="">
-<header>
+<div id="overlay">
+
+<header id="headerInfo">
    <div class="headerinfo">
       <h1>SoundScape</h1>
-      <input type="text" placeholder="find your jam..." />
   </div>
 
   <div class="songinfo">
@@ -24,6 +25,7 @@
   </div>
 </header>
 <canvas id="canvas"></canvas>
+</div>
 
 <script type="text/javascript">
 
@@ -33,15 +35,42 @@ const albumTitle = document.getElementById('albumTitle');
 
 let bpm = 100;
 
+const he1 = "rgba(255, 247, 0, 0.8)";
+const he2 = "rgba(255, 250, 112, 0.8)";
+const he3 = "rgba(255, 252, 164, 0.8)";
+const highEnergy = [he1, he2, he3];
+
+const me1 = "rgba(13, 255, 0, 0.8)";
+const me2 = "rgba(9, 176, 0, 0.8)";
+const me3 = "rgba(119, 255, 112, 0.8)";
+const midEnergy = [me1, me2, me3];
+
+const le1 = "rgba(0, 61, 107, 0.8)";
+const le2 = "rgba(16, 151, 255, 0.8)";
+const le3 = "rgba(169, 218, 255, 0.8)";
+const lowEnergy = [le1, le2, le3];
 
 
+var circleArray = [];
 
-const highEnergy = "rgba(168, 166, 254, 0.8)";
-const midEnergy = "rgba(34, 30, 255, 0.8)";
-const lowEnergy = "rgba(6, 4, 119, 0.8)";
+var t;
+var t2;
+var t3;
+var getSegments = [];
+var overlay = document.getElementById('overlay');
+var headerInfo = document.getElementById('headerInfo');
+
+var canvas = document.getElementById('canvas');
+var c = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+var randomColor = "rgba(" + Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+",0.8)";
+
+var animateCounter = 0;
 
 
-setTimeout(function getCurrentSong(){
+setInterval(function getCurrentSong(){
   let currentSong = new Object();
   const url = window.location.href;
   //console.log(url);
@@ -62,43 +91,48 @@ setTimeout(function getCurrentSong(){
         //console.log(responseAsJson);
         currentSong = responseAsJson;
         if (songTitle.innerHTML == currentSong.item.name){
-          console.log("same song");
+          // console.log("same song");
           return;
         }
         else {
-          console.log("test");
+          // console.log("test");
+
           albumArt.src = currentSong.item.album.images[0].url;
           songTitle.innerHTML = currentSong.item.name;
           albumTitle.innerHTML = currentSong.item.album.name;
           artistTitle.innerHTML = currentSong.item.album.artists[0].name;
+          barsCounter = 0
+          barsTime = [];
           getAudioFeatures(currentSong, token);
         }
 
       });
 }, 1000);
 
-// function getAudioAnalysis(currentSong, token){
-//   let currentSection = new Object();
-//   //track.sections.start
-//   fetch("https://api.spotify.com/v1/audio-analysis/" + currentSong.item.id, {
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: "Bearer " + token,
-//       "Content-Type": "application/json"
-//     }
-//   })
-//     .then(function(response){
-//       return response.json();
-//     })
-//     .then(function(responseAsJson){
-//         //console.log(responseAsJson);
-//         audioAnalysis = responseAsJson;
-//         return audioAnalysis;
-//       })
-//       .then(function(audioAnalysis){
-//         getAudioFeatures(currentSong, audioAnalysis, token);
-//       });
-// }
+function getAudioAnalysis(trackFeatures, token, currentSong){
+  let currentSection = new Object();
+  //track.sections.start
+  fetch("https://api.spotify.com/v1/audio-analysis/" + currentSong.item.id, {
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(responseAsJson){
+        //console.log(responseAsJson);
+        audioAnalysis = responseAsJson;
+        return audioAnalysis;
+      })
+      .then(function(audioAnalysis){
+        // getAudioFeatures(currentSong, audioAnalysis, token);
+        console.log(audioAnalysis);
+        visualizer(trackFeatures, currentSong, audioAnalysis);
+      });
+}
 
 function getAudioFeatures(currentSong, token){
   console.log("audioFeaturesRunning");
@@ -120,96 +154,146 @@ function getAudioFeatures(currentSong, token){
     return trackFeatures;
   })
   .then(function(trackFeatures){
-    visualizer(trackFeatures, currentSong);
+    //visualizer(trackFeatures, currentSong);
+    getAudioAnalysis(trackFeatures,token, currentSong);
 
   });
 }
 
+function visualizer(trackFeatures, currentSong, audioAnalysis){
+  var barsCounter=0;
+  var barsTime = [];
+  var currentPointBars = currentSong.progress_ms;
+  var songEnergy = trackFeatures.valence;
 
-function visualizer(trackFeatures, currentSong){
+  var currentPointSegments = currentPointBars;
+  var segmentCounter = 0;
+  clearTimeout(t2);
+  clearTimeout(t3);
   console.log("visualize running");
 
-  let currentPoint = currentSong.progress_ms;
-  console.log(trackFeatures);
+  for(var x = 0; x<audioAnalysis.bars.length; x++){
+    barsTime.push(audioAnalysis.bars[x].start);
+  }
+  for (var x = 0; x<audioAnalysis.segments.length; x++){
+    getSegments.push(audioAnalysis.segments[x].start);
+  }
+
+  //console.log(getSegments);
+  //console.log(barsTime);
+
+  t2 = setInterval(function(){
+    randomColor = "rgba(" + Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+",0.8)";
+
+    for(var x = 0; x<barsTime.length; x++){
+
+      if (barsTime[x].toFixed(1) == (currentPointBars/1000).toFixed(1)){
+        barsCounter++;
+        console.log(barsCounter);
+        console.log("bar Start " + barsTime[x].toFixed(1) + " currentPoint: " + (currentPointBars/1000).toFixed(1));
+
+        overlay.style.backgroundColor = randomColor;
+        overlay.style.transition = "background 0.5s";
+
+      }
+    }
+    currentPointBars+=100;
+  }, 100);
+
+  //console.log(trackFeatures);
    bpm = trackFeatures.tempo;
-   return bpm;
-
+  // console.log(bpm);
+   createCircs(bpm, songEnergy);
 }
 
+function createCircs(bpm, songEnergy){
+  clearTimeout(t);
 
-
-var canvas = document.getElementById('canvas');
-var c = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-var randomColor = "rgba(" + Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+",0.8)";
-
-var circleArray = [];
-
-
-for(let i=1; i<1000; i++){
-  var x = 500;
-  var y = 500;
+  i = 1;
+  circleArray.length = 0;
+  cancelAnimationFrame(animate);
+  c.clearRect(0, 0, window.width, window.height);
+  circleArray = [];
+  var x = window.width/2;
+  var y = 1500;
   var radius = Math.floor(Math.random() * 256);
-  (function(i){
-    setTimeout(function(){
-      console.log(i);
-        circleArray.push(new Circle(this.x, this.y, this.radius));
-        bpm.addEventListener
-        console.log(bpm);
-        i++;
-    }, 60000/bpm * i);
-})(i);
-}
+  for(let i=1; i<2; i++){
+    (function(i){
+      //console.log(bpm);
+      t = setInterval(function(i){
+          circleArray.push(new Circle(this.x, this.y, this.radius, bpm, songEnergy));
 
-var circle = new Circle(x, y, radius, randomColor);
+        }, 60000/bpm * i);
+        if (this.bpm != window.bpm){
+          return;
+        }
+    })(i);
+  }
+
+
+}
 
 animate();
+var drawCounter = 0;
+function circFillStyle(songEnergy){
+  var randomFill;
+  if (songEnergy >=0.6){
+    randomFill = highEnergy[Math.floor(Math.random() * Math.floor(3))];
 
-function Circle(x, y, radius){
-  this.x = x;
-  this.y = y;
-  this.radius = 55;
-  this.randomStroke = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";;
-  this.randomFill = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.8)";;
+  }
+  else if (songEnergy >=0.3 && songEnergy <0.6){
+    randomFill = midEnergy[Math.floor(Math.random() * Math.floor(3))];
+
+  }
+  else{
+    randomFill = lowEnergy[Math.floor(Math.random() * Math.floor(3))];
+
+  }
+  return randomFill;
+}
+function Circle(x, y, radius, bpm, songEnergy, i){
+  var initialRadius = Math.floor(Math.random() * Math.floor(6));
+  var radiusDirection = initialRadius;
+
+  this.x = canvas.width/2;// Math.floor(Math.random() * 1500);
+  this.y = canvas.height/2;// Math.floor(Math.random() * 1500);
+  this.radius = initialRadius;
+  var randomFill = circFillStyle(songEnergy);
 
   this.draw = function() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, Math.PI * 2, false);
-    c.strokeStyle =  this.randomStroke;
-    c.fillStyle = this.randomFill;
-    c.lineWidth = 15;
-    c.stroke();
+    c.fillStyle = randomFill;
     c.fill();
-    this.update();
-    //console.log(this.x);
-    //console.log(this.y);
-    //console.log(radius);
+    this.update(bpm);
+
   }
 
-  this.update = function(){
-    if (this.radius > 1500){
-      cancelAnimationFrame(animate);
+  this.update = function(bpm){
+    // drawCounter++;
+    // if(Math.round(60000/bpm) == drawCounter){
+    //   // circleArray.forEach(function(circle){
+    //   //   c.fillStyle = circFillStyle(songEnergy);
+    //   //   c.fill();
+    //   //   console.log("hit");
+    //   // })
+    //   drawCounter = 0;
+
+    if (this.radius > 200 || this.radius < initialRadius){
+      // this.radius = 55;
+      radiusDirection = -radiusDirection;
     }
-    this.radius+=10;
+    this.radius+=radiusDirection;
   }
 }
+
 function animate(){
-requestAnimationFrame(animate);
-c.clearRect(0, 0, innerWidth, innerHeight);
-for (let i=0; i<circleArray.length; i++){
-  circleArray[i].draw();
-  console.log("drawn");
-
-
+  requestAnimationFrame(animate);
+  c.clearRect(0, 0, innerWidth, innerHeight);
+  for (let i=0; i<circleArray.length; i++){
+    circleArray[i].draw();
+  }
 }
-
-}
-
-
-
-
 
 </script>
 </body>
