@@ -254,7 +254,10 @@ function circFillStyle(songEnergy){
 function Circle(x, y, radius, bpm, songEnergy, i){
   var initialRadius = Math.floor(Math.random() * Math.floor(6));
   var radiusDirection = initialRadius;
-
+  var maxRadius = 500;
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    maxRadius = 200;
+}
   this.x = canvas.width/2;// Math.floor(Math.random() * 1500);
   this.y = canvas.height/2;// Math.floor(Math.random() * 1500);
   this.radius = initialRadius;
@@ -279,7 +282,7 @@ function Circle(x, y, radius, bpm, songEnergy, i){
     //   // })
     //   drawCounter = 0;
 
-    if (this.radius > 200 || this.radius < initialRadius){
+    if (this.radius > maxRadius || this.radius < initialRadius){
       // this.radius = 55;
       radiusDirection = -radiusDirection;
     }
