@@ -4,12 +4,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <h1>Scoundscape</h1>
-  <h6>Spotify powered audio visualizer</h6>
-<button onclick="javascript:connect()">Login</button>
+  <div id="wrapper">
+    <div id="text">
+      <h1 class="header">Scoundscape</h1>
+      <h6 class="header">Spotify powered audio visualizer</h6>
+      <button onclick="javascript:connect()">login</button>
+    </div>
+    <canvas id="canvas"></canvas>
+  </div>
   <script>
   function connect(){
     window.location = "https://accounts.spotify.com/authorize?client_id=2fe0f44ac0c44b449cc618cc9db7b33f&redirect_uri=http://itsseanl.github.io/VI/spotifywebapi/callback.html&scope=user-read-currently-playing&response_type=token&state=123";
+  }
+  var bgColor = document.getElementById('wrapper');
+  setInterval(function(){
+    bgColor.style.backgroundColor = "rgba(" + Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+","+Math.floor(Math.random() * 256)+",0.8)";
+  }, 3000);
+
+  var circleArray = [];
+  var canvas = document.getElementById('canvas');
+  var c = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const le1 = "rgba(0, 61, 107, 0.8)";
+  const le2 = "rgba(16, 151, 255, 0.8)";
+  const le3 = "rgba(169, 218, 255, 0.8)";
+  const lowEnergy = [le1, le2, le3];
+
+  createCircs();
+  animate();
+
+  function createCircs(){
+
+    i = 1;
+    circleArray.length = 0;
+    cancelAnimationFrame(animate);
+    c.clearRect(0, 0, window.width, window.height);
+    circleArray = [];
+    var x = window.width/2;
+    var y = window.height/2;
+    var radius = Math.floor(Math.random() * 256);
+    for(let i=1; i<2; i++){
+      (function(i){
+        //console.log(bpm);
+        t = setInterval(function(i){
+            circleArray.push(new Circle(this.x, this.y, this.radius));
+
+          }, 3000 * i);
+      })(i);
+    }
+  }
+
+  function Circle(x, y, radius, bpm, songEnergy, i){
+    var initialRadius = Math.floor(Math.random() * Math.floor(3));
+    var radiusDirection = initialRadius;
+    var maxRadius = 3500;
+
+    this.x =  Math.floor(Math.random() * 1000);
+    this.y =  Math.floor(Math.random() * 750);
+    this.radius = initialRadius;
+    var randomFill = lowEnergy[Math.floor(Math.random() * Math.floor(3))];
+
+    this.draw = function() {
+      c.beginPath();
+      c.arc(this.x, this.y, this.radius, Math.PI * 2, false);
+      c.fillStyle = randomFill;
+      c.fill();
+      this.update(bpm);
+
+    }
+
+    this.update = function(bpm){
+      if (this.radius > maxRadius || this.radius < initialRadius){
+        // this.radius = 55;
+        return;
+      }
+      this.radius+=radiusDirection;
+    }
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i=0; i<circleArray.length; i++){
+      circleArray[i].draw();
+    }
   }
 </script>
 </body>

@@ -1,5 +1,63 @@
 @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow');
 
 html, body{
   font-family: 'Amatic SC';
+  margin:0;
+  padding:0;
+
+}
+#wrapper{
+    height:100vh;
+    width:100vw;
+    transition: 0.5s ease;
+
+}
+#text{
+  background-color: #191414;
+  width:100vw;
+  height:30vh;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  z-index:999;
+  color:#ffffff;
+  border-bottom:2px solid #1db954;
+  position: relative;
+}
+
+#text h1{
+  margin:0px;
+  margin-top:5vh;
+
+}
+#text h6{
+  font-size:1em;
+  margin:0;
+  margin-bottom:1vh;
+}
+button{
+  border:0;
+  background-color:#1db954;
+  color:#191414;
+  font-size:24px;
+  font-family: 'PT Sans Narrow', sans-serif;
+
+  border-radius:10px;
+  width:8vw;
+  height:5vh;
+  transition:0.5s ease;
+
+}
+button:hover{
+  background-color:#1ed760;
+  transition:0.5s ease;
+}
+canvas{
+  z-index: 1;
+  width:100vw;
+  height:70vh;
+  position:absolute;
+  bottom:0;
 }
