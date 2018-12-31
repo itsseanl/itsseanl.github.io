@@ -1,0 +1,186 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+
+    <div class="overlay">
+      <!-- <div class="navbar">
+        <ul>
+          <li>Person</li>
+          <li>Products</li>
+          <li>Programs</li>
+          <li>Projects</li>
+        </ul>
+      </div> -->
+
+      <h1 id="titleh1">lifeStack <i class="fas fa-align-left"></i></h1>
+       <h2></h2>
+    </div>
+  </div>
+  <div class="main">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img class="modal-content"src="#" />
+        <h1 class="modal-content"></h1>
+        <h2 class="modal-content"></h2>
+        <p class="modal-content"></p>
+
+      </div>
+
+    </div>
+    <div class="navbar">
+      <ul>
+        <li>Products</li>
+        <li>Programs</li>
+        <li>About</li>
+      </ul>
+    </div>
+    <div class="products">
+      <button style="border:none; background-color:white; margin:0;padding:0; z-index:0;" class="mba" id="test" onClick="javascript:openModal(this)">
+      <div class="flexitem">
+        <img class="mba" src="images/mba.png"/>
+        <h2 class="mba">Macbook Air</h2>
+        <h3 class="mba">$999</h3>
+        <p class="mba" style="display:none">
+          test
+        </p>
+      </div></button>
+      <div class="flexitem">
+        <img src="images/carbide400c.png"/>
+        <h2>Custom Build</h2>
+        <h3>$900</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/ipad.png"/>
+        <h2>iPad 6th Gen</h2>
+        <h3>$329</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/pixel2xl.png"/>
+        <h2>Pixel 2 XL</h2>
+        <h3>$849</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/athm50x.png"/>
+        <h2>Audio-Technica ATH-M50x</h2>
+        <h3>$129</h3>
+      </div>
+      <div class="flexitem three">
+        <img src="images/k840.png"/>
+        <h2>Logitech K840 Mechanical Keyboard</h2>
+        <h3>$50</h3>
+      </div>
+      <!-- ---------------------------------- -->
+      <div class="flexitem three">
+        <img src="images/m570.png"/>
+        <h2>Logitech M570 Trackball</h2>
+        <h3>$59</h3>
+      </div>
+      <div class="flexitem three">
+        <img src="images/tcl49.png"/>
+        <h2>TCL 49S405 49" 4K Ultra HD Roku Smart LED </h2>
+        <h3>$300</h3>
+      </div>
+      <!-- ---------------------------------- -->
+      <div class="flexitem">
+        <img src="images/hp25es.png"/>
+        <h2>HP 25es</h2>
+        <h3>$170</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/z533.png"/>
+        <h2>Logitech z533 Multimedia Speakers</h2>
+        <h3>$50</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/ipad.png"/>
+        <h2>iPad 6th Gen</h2>
+        <h3>$329</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/pixel2xl.png"/>
+        <h2>Pixel 2 XL</h2>
+        <h3>$849</h3>
+      </div>
+      <div class="flexitem">
+        <img src="images/athm50x.png"/>
+        <h2>Audio-Technica ATH-M50x</h2>
+        <h3>$129</h3>
+      </div>
+    <div class="programs">
+
+    </div>
+    <div class="projects">
+
+    </div>
+  </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script>
+$(window).scroll(function(){
+  console.log('scrolling');
+  var scrollStop = $(document).height()*0.25;
+  console.log(scrollStop);
+       if ($(window).scrollTop() > scrollStop){
+           $('#titleh1').css('position','absolute');
+           $('#titleh1').css('margin-top','45vh');
+
+       }
+   });
+
+   // Modal
+   var modal = document.getElementById('myModal');
+
+   // Get the button that opens the modal
+   var btn = document.getElementById("myBtn");
+
+   // Get the <span> element that closes the modal
+   var span = document.getElementsByClassName("close")[0];
+
+   // When the user clicks on the button, open the modal
+   function openModal(elem) {
+     var elem = elem;
+     console.log(elem);
+     modal.style.opacity = "1";
+     modal.style.height ="100%";
+     var productInfo = document.getElementsByClassName(elem.className);
+     var modalContent = document.getElementsByClassName('modal-content');
+     modalContent[1].src = productInfo[1].src;
+     modalContent[2].innerHTML = productInfo[2].innerHTML;
+     modalContent[3].innerHTML = productInfo[3].innerHTML;
+     modalContent[4].innerHTML = productInfo[4].innerHTML;
+
+     //modal-content
+   }
+
+   // When the user clicks on <span> (x), close the modal
+   span.onclick = function() {
+     modal.style.opacity = "0";
+     modal.style.height="0";
+   }
+
+   // When the user clicks anywhere outside of the modal, close it
+   window.onclick = function(event) {
+     if (event.target == modal) {
+       modal.style.opacity = "0";
+       modal.style.height="0";
+
+     }
+   }
+</script>
+</body>
+</html>
