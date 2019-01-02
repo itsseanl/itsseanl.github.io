@@ -4,15 +4,19 @@ html, body{
   margin:0;
   padding:0;
   font-family:'Montserrat';
-  overflow-x: hidden;
+  margin: 0 auto;
+  width:100vw;
+  overflow-x:hidden;
 }
 .wrapper{
   display:flex;
   flex-direction:column;
+
 }
 .header{
   min-height:90vh;
   width:100vw;
+  max-width:100%;
   background-image:url('images/room.jpg');
   background-size:cover;
   background-repeat: no-repeat;
@@ -21,6 +25,7 @@ html, body{
 .overlay{
   width:100vw;
   height:100vh;
+  max-width:100%;
   background-color:black;
   opacity:0.9;
   display:flex;
@@ -44,16 +49,6 @@ html, body{
       -ms-animation: fadeH1 4s; /* Internet Explorer */
        -o-animation: fadeH1 4s; /* Opera < 12.1 */
           animation: fadeH1 4s;
-}
-.overlay > h2 {
-  color:white;
-  opacity:1;
-  margin:0.5;
-  -webkit-animation: fadeH2 6s; /* Safari, Chrome and Opera > 12.1 */
-     -moz-animation: fadeH2 6s; /* Firefox < 16 */
-      -ms-animation: fadeH2 6s; /* Internet Explorer */
-       -o-animation: fadeH2 6s; /* Opera < 12.1 */
-          animation: fadeH2 6s;
 }
 
 i{
@@ -119,35 +114,7 @@ to   { opacity: 1; }
 from { opacity: 0; }
 to   { opacity: 1; }
 }
-/*-------------------------------*/
-@keyframes fadeH2 {
-from { opacity: -1; }
-to   { opacity: 1; }
-}
 
-/* Firefox < 16 */
-@-moz-keyframes fadeH2 {
-from { opacity: 0; }
-to   { opacity: 1; }
-}
-
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadeH2 {
-from { opacity: -2; }
-to   { opacity: 1; }
-}
-
-/* Internet Explorer */
-@-ms-keyframes fadeH2 {
-from { opacity: 0; }
-to   { opacity: 1; }
-}
-
-/* Opera < 12.1 */
-@-o-keyframes fadeH2 {
-from { opacity: 0; }
-to   { opacity: 1; }
-}
 
 .header > img {
   height:auto;
@@ -161,7 +128,6 @@ to   { opacity: 1; }
 }
 
 .products{
-  /* padding-top:10vh; */
   display:flex;
   flex-direction:row;
   justify-content: center;
@@ -209,6 +175,7 @@ to   { opacity: 1; }
 }
 .navbar > ul{
   list-style: none;
+  padding:0;
 }
 .navbar > ul li{
   display:inline;
@@ -219,10 +186,11 @@ to   { opacity: 1; }
   width:30vw!important;
   flex: 1 0 auto;
 }
+
 /* modal */
-/* ------------------------ */
 .modal {
   z-index:1;
+  overflow:hidden!important;
   transition: all 0.3s;
   color:red;
   display: block;
@@ -240,15 +208,49 @@ to   { opacity: 1; }
 
 /* Modal Content/Box */
 .modal-content {
+  display:flex;
+  flex-direction:row;
   transition: all 0.3s;
-
-  background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 60%; /* Could be more or less, depending on screen size */
+}
+#modalContent{
+  background-color:antiquewhite;
+}
+.modal-content img{
+  margin:0;
+  padding:0;
+  border:0;
+  width:auto;
+  height:60%!imporant;
+  max-height:60%;
+}
+.modal-content h1,
+.modal-content h2,
+.modal-content p{
+  margin:5px;
+  padding:0;
+  border:0;
+  display:flex;
+  align-self:flex-start;
+  width:auto;
+  height:auto;
 }
 
+.item{
+  border:2px solid #1F71C2;
+  border-radius:4px;
+}
+.item:hover,
+.itemDescription:hover{
+  box-shadow:none;
+}
+.itemDescription{
+  background-color:antiquewhite;
+  justify-content: flex-start;
+}
 /* The Close Button */
 .close {
   color: #aaa;
@@ -267,9 +269,15 @@ to   { opacity: 1; }
   cursor: pointer;
 }
 button {
-  position:relative;
-  z-index: 9999;
+  border:none;
+   background-color:white;
+   margin:0;
+   padding:0;
+   z-index:0;
 }
+/* .flexitem p{
+  display:none;
+} */
 /* ------------------ */
 
 
@@ -284,7 +292,7 @@ button {
 
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 900px) {
   .flexitem{
     width:30vw;
   }
