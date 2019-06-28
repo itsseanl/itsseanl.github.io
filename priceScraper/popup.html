@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html, body{
+        width:400px;
+        height:500px;
+        margin:0;
+        padding:0;
+        background-color:white;
+        display:flex;
+        flex-direction:column;
+
+      }
+      button {
+        height: 30px;
+        width: 250px;
+        outline: none;
+        background-color:#d7d7d7;
+        border:2px solid #979797;
+        color:white;
+        margin:0 auto;
+        margin-top:10px;
+      }
+      #logo{
+        height:45px;
+        display:block;
+        margin:0 auto;
+        padding:10px;
+        background-color:white;
+        border-radius:99px;
+        overflow:visible;
+      }
+      .logoBG{
+        background-color:#2faae1;
+        padding-top:20px;
+        padding-bottom:20px;
+        width:100%;
+        height:100px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin:0 auto;
+        border-bottom:1px solid black;
+
+      }
+      .product{
+        display:flex;
+        flex:1 0 auto;
+      }
+      .left{
+        width:30%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+        height:150px;
+      }
+      .right{
+        display:flex;
+        flex-direction:column;
+        width:70%;
+        padding:20px;
+      }
+      .pname{
+        font-weight:400;
+        font-size:14px;
+      }
+      .price{
+        color:#B12704;
+      }
+      .right > p{
+        padding-top:5px;
+        padding-bottom:5px;
+        margin:0;
+        display:inline;
+      }
+      .pimg{
+        width:100%;
+      }
+      #prod1{
+        display:none;
+      }
+      .loading{
+        position: absolute;
+    height: 85px;
+    padding:10px;
+      }
+      .remove{
+        float:right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logoBG">
+      <img id="logo" class="imgsrc" src="images/logo128.png" alt="product" />
+      <img class="loading" src="images/oval.svg" />
+
+    </div>
+    <button id="watch">START WATCHING</button>
+
+      <div class="product" id="prod1">
+        <div class="left">
+          <img id="prodImg" class="pimg" src="#" alt="product"  style="width:100%;" />
+        </div>
+        <div class="right">
+          <a href="#" class="remove">remove</a>
+          <p id="prodName" class="pname" style="font-size:14px;font-weight:400;"></p>
+          <p id="prodPrice" class="price"></p>
+          <p id="prodUpdatedPrice" class="price"></p>
+          <p id="avail" class="stocked"></p>
+        </div>
+      </div>
+  </body>
+  <script src="jquery-3.4.1.min.js"></script>
+  <script src="background.js"></script>
+  <script src="priceChecker.js"></script>
+</html>
